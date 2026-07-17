@@ -1,12 +1,19 @@
 # @gojargo/jargo-client-react
 
-A small **browser client** (classic WebRTC) and **React bindings** for
-[jargo](https://github.com/gojargo/jargo) voice servers. It speaks jargo's
-WebRTC signaling (`POST /offer`, non-trickle SDP) and the RTVI protocol over a
-`"rtvi"` data channel — no Daily/Pipecat SDK dependency.
+**React bindings** for
+[`@gojargo/jargo-client-js`](https://github.com/gojargo/jargo-client-js) — the
+browser client (classic WebRTC) for [jargo](https://github.com/gojargo/jargo)
+voice servers. It speaks jargo's WebRTC signaling (`POST /offer`, non-trickle
+SDP) and the RTVI protocol over a `"rtvi"` data channel — no Daily/Pipecat SDK
+dependency.
 
-- **`@gojargo/jargo-client-react`** — framework-agnostic core (`JargoClient`).
-- **`@gojargo/jargo-client-react/react`** — provider, hooks, audio + visualizer.
+The React package is a thin layer on top of the base JS library; installing it
+pulls in `@gojargo/jargo-client-js` automatically.
+
+- **`@gojargo/jargo-client-react`** — re-exports the base library (`JargoClient`,
+  types, and the `Orb` engine).
+- **`@gojargo/jargo-client-react/react`** — provider, hooks, audio, visualizer,
+  and the React `<Orb />`.
 
 ## Install
 
@@ -73,6 +80,26 @@ export default function App() {
 }
 ```
 
+## Orb
+
+`<Orb />` is an animated orb of moving lines (from the base library's `Orb`
+engine). Inside a `<JargoClientProvider>` it reacts to the bot's voice
+automatically; standalone, drive it with a `level` (0..1) or let it idle.
+
+```tsx
+import { Orb } from "@gojargo/jargo-client-react/react";
+
+// Reacts to the bot when inside a <JargoClientProvider>:
+<Orb size={220} colors={["#22d3ee", "#6366f1", "#a855f7"]} />
+
+// Standalone, manually driven:
+<Orb size={160} level={0.7} reactToBot={false} />
+```
+
+`<Orb />` forwards all engine options (`rings`, `radius`, `colors`, `speed`,
+`reactivity`, `glow`, `core`, `blend`, …) plus `size`/`width`/`height`,
+`level`, `reactToBot`, and `paused`.
+
 ## API
 
 **Core** — `new JargoClient(options)`; `connect()`, `disconnect()`,
@@ -85,7 +112,7 @@ export default function App() {
 `serverMessage` (raw, incl. non-RTVI like jargo's `set_volume`), `remoteTrack`.
 
 **React** — `JargoClientProvider`, `JargoClientAudio`, `VoiceVisualizer`,
-`useJargoClient`, `useJargoConnection`, `useJargoTransportState`,
+`Orb`, `useJargoClient`, `useJargoConnection`, `useJargoTransportState`,
 `useJargoMicToggle`, `useJargoEvent`.
 
 ## Example

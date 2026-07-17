@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { JargoClient } from "../core/JargoClient";
+import type { JargoClient } from "@gojargo/jargo-client-js";
 import { JargoClientContext } from "./context";
 
 export interface JargoClientProviderProps {

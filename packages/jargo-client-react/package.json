@@ -1,7 +1,7 @@
 {
   "name": "@gojargo/jargo-client-react",
   "version": "0.1.0",
-  "description": "Classic-WebRTC + RTVI browser client for jargo voice servers, with React bindings.",
+  "description": "React bindings for @gojargo/jargo-client-js — jargo voice client, hooks, and the Orb UI element.",
   "license": "BSD-2-Clause",
   "author": "the jargo authors",
   "repository": {
@@ -31,6 +31,9 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gojargo/jargo-client-js": "^0.1.0"
   },
   "peerDependencies": {
     "react": ">=18",

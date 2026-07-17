@@ -1,11 +1,15 @@
 # jargo-client-react
 
-Browser client (classic WebRTC) + React bindings for
+React bindings for
 [jargo](https://github.com/gojargo/jargo) voice servers, plus a runnable
 Next.js example. npm workspaces monorepo.
 
+The React package builds on the framework-agnostic base library
+[`@gojargo/jargo-client-js`](https://github.com/gojargo/jargo-client-js) (the
+WebRTC/RTVI client and the **Orb** UI element), which lives in its own repo.
+
 - **[`packages/jargo-client-react`](./packages/jargo-client-react)** — the
-  `@gojargo/jargo-client-react` library (core + React).
+  `@gojargo/jargo-client-react` library (React provider, hooks, `<Orb />`).
 - **[`examples/nextjs-voicebot`](./examples/nextjs-voicebot)** — a Next.js
   voicebot using the library.
 
