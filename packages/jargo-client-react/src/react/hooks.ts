@@ -87,3 +87,76 @@ export function useJargoMicToggle() {
   );
   return { enabled, toggle, setEnabled: set };
 }
+
+/** A single line in a {@link useJargoTranscript} conversation. */
+export interface TranscriptMessage {
+  id: string;
+  role: "user" | "agent";
+  text: string;
+  /** False while a line is still being appended to (streaming / interim). */
+  final: boolean;
+}
+
+/**
+ * Accumulates the conversation from client events into a message list: interim
+ * user transcripts update in place then finalize; streamed `botLlmText` tokens
+ * coalesce into the current agent line; fixed `botTtsText` becomes its own line;
+ * and `botStoppedSpeaking` closes the current agent turn. Returns the messages
+ * and a `clear()`.
+ */
+export function useJargoTranscript(): {
+  messages: TranscriptMessage[];
+  clear: () => void;
+} {
+  const [messages, setMessages] = useState<TranscriptMessage[]>([]);
+  const idRef = useRef(0);
+  const nextId = useCallback(() => `m${idRef.current++}`, []);
+
+  useJargoEvent("userTranscript", ({ text, final }) => {
+    const trimmed = text.trim();
+    setMessages((prev) => {
+      const last = prev[prev.length - 1];
+      // Update the trailing interim user line in place, if any.
+      if (last && last.role === "user" && !last.final) {
+        return [...prev.slice(0, -1), { ...last, text, final }];
+      }
+      if (!trimmed) return prev;
+      return [...prev, { id: nextId(), role: "user", text, final }];
+    });
+  });
+
+  useJargoEvent("botLlmText", ({ text }) => {
+    if (!text) return;
+    setMessages((prev) => {
+      const last = prev[prev.length - 1];
+      if (last && last.role === "agent" && !last.final) {
+        return [...prev.slice(0, -1), { ...last, text: last.text + text }];
+      }
+      return [...prev, { id: nextId(), role: "agent", text, final: false }];
+    });
+  });
+
+  // Fixed bot speech (e.g. a wake-word ack) — its own final line.
+  useJargoEvent("botTtsText", ({ text }) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    setMessages((prev) => [
+      ...prev,
+      { id: nextId(), role: "agent", text: trimmed, final: true },
+    ]);
+  });
+
+  // End of a bot turn: close the current streaming agent line.
+  useJargoEvent("botStoppedSpeaking", () => {
+    setMessages((prev) => {
+      const last = prev[prev.length - 1];
+      if (last && last.role === "agent" && !last.final) {
+        return [...prev.slice(0, -1), { ...last, final: true }];
+      }
+      return prev;
+    });
+  });
+
+  const clear = useCallback(() => setMessages([]), []);
+  return { messages, clear };
+}

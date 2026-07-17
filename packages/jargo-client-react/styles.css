@@ -1,0 +1,218 @@
+/*
+ * @gojargo/jargo-client-react component styles.
+ *   import "@gojargo/jargo-client-react/styles.css";
+ *
+ * Everything is themed through --jargo-* custom properties. The defaults below
+ * are set at zero specificity (:where) and adapt to the OS color scheme —
+ * override any token on an ancestor to restyle.
+ */
+:where(:root) {
+  --jargo-accent: #6366f1;
+  --jargo-accent-contrast: #ffffff;
+  --jargo-danger: #ef4444;
+  --jargo-radius: 12px;
+  --jargo-gap: 12px;
+  --jargo-font: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+
+  --jargo-surface: #ffffff;
+  --jargo-border: #e5e7eb;
+  --jargo-text: #111827;
+  --jargo-muted: #6b7280;
+  --jargo-bubble: #f3f4f6;
+
+  --jargo-ok: #22c55e;
+  --jargo-warn: #eab308;
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(:root) {
+    --jargo-surface: #181a2a;
+    --jargo-border: #2b3050;
+    --jargo-text: #e7e8f5;
+    --jargo-muted: #9aa0c3;
+    --jargo-bubble: #262a44;
+  }
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+.jargo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--jargo-font);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--jargo-radius);
+  cursor: pointer;
+  color: var(--jargo-accent-contrast);
+  transition: filter 0.15s, background 0.15s, border-color 0.15s, opacity 0.15s;
+}
+.jargo-btn:hover:not(:disabled) {
+  filter: brightness(1.07);
+}
+.jargo-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.jargo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.jargo-btn:focus-visible {
+  outline: 2px solid var(--jargo-accent);
+  outline-offset: 2px;
+}
+.jargo-btn--primary {
+  background: var(--jargo-accent);
+}
+.jargo-btn--danger {
+  background: var(--jargo-danger);
+}
+.jargo-btn--ghost {
+  background: transparent;
+  color: var(--jargo-text);
+  border-color: var(--jargo-border);
+}
+.jargo-btn--ghost:hover:not(:disabled) {
+  border-color: var(--jargo-accent);
+  filter: none;
+}
+
+.jargo-mic-icon {
+  flex: none;
+}
+
+/* --- Spinner -------------------------------------------------------------- */
+.jargo-spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: jargo-spin 0.7s linear infinite;
+}
+@keyframes jargo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jargo-spinner {
+    animation-duration: 2s;
+  }
+}
+
+/* --- Connection status ---------------------------------------------------- */
+.jargo-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--jargo-font);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 11px;
+  border-radius: 999px;
+  color: var(--jargo-muted);
+  background: color-mix(in srgb, var(--jargo-muted) 14%, transparent);
+}
+.jargo-status__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.jargo-status--connecting {
+  color: var(--jargo-warn);
+  background: color-mix(in srgb, var(--jargo-warn) 16%, transparent);
+}
+.jargo-status--connected,
+.jargo-status--ready {
+  color: var(--jargo-ok);
+  background: color-mix(in srgb, var(--jargo-ok) 16%, transparent);
+}
+.jargo-status--error {
+  color: var(--jargo-danger);
+  background: color-mix(in srgb, var(--jargo-danger) 16%, transparent);
+}
+.jargo-status--ready .jargo-status__dot {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--jargo-ok) 30%, transparent);
+}
+
+/* --- Transcript ----------------------------------------------------------- */
+.jargo-transcript {
+  display: flex;
+  flex-direction: column;
+  gap: var(--jargo-gap);
+  overflow-y: auto;
+  padding: 16px;
+  background: var(--jargo-surface);
+  border: 1px solid var(--jargo-border);
+  border-radius: var(--jargo-radius);
+  color: var(--jargo-text);
+  font-family: var(--jargo-font);
+}
+.jargo-transcript__empty {
+  margin: auto;
+  color: var(--jargo-muted);
+  text-align: center;
+  font-size: 15px;
+}
+
+.jargo-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 85%;
+}
+.jargo-msg--user {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+.jargo-msg__role {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--jargo-muted);
+}
+.jargo-msg__text {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--jargo-bubble);
+  color: var(--jargo-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.jargo-msg--user .jargo-msg__text {
+  background: var(--jargo-accent);
+  color: var(--jargo-accent-contrast);
+  border-bottom-right-radius: 3px;
+}
+.jargo-msg--agent .jargo-msg__text {
+  border-bottom-left-radius: 3px;
+}
+/* A subtle caret on a still-streaming agent line. */
+.jargo-msg[data-streaming="true"].jargo-msg--agent .jargo-msg__text::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: currentColor;
+  opacity: 0.6;
+  animation: jargo-blink 1s steps(2) infinite;
+}
+@keyframes jargo-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jargo-msg[data-streaming="true"].jargo-msg--agent .jargo-msg__text::after {
+    animation: none;
+  }
+}

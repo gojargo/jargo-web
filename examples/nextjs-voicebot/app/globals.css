@@ -6,6 +6,17 @@
   --muted: #9aa0c3;
   --primary: #6366f1;
   --danger: #ef4444;
+
+  /* Theme the jargo components to match this page. */
+  --jargo-accent: var(--primary);
+  --jargo-accent-contrast: #ffffff;
+  --jargo-danger: var(--danger);
+  --jargo-surface: var(--panel);
+  --jargo-border: var(--line);
+  --jargo-text: var(--text);
+  --jargo-muted: var(--muted);
+  --jargo-bubble: var(--line);
+  --jargo-radius: 14px;
 }
 
 * {
@@ -99,18 +110,12 @@ body {
   color: #5ee08a;
 }
 
+/* The Transcript component owns its own look (surface, padding, scroll); the
+   example only sets how it flexes in the page. */
 .feed {
   flex: 1;
   min-height: 200px;
   max-height: 46vh;
-  overflow-y: auto;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
 .hint {

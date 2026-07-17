@@ -102,6 +102,39 @@ import { Orb, OrbPalettes } from "@gojargo/jargo-client-react/react";
 `level`, `reactToBot`, and `paused`. Built-in palettes are exported as
 `OrbPalettes` (`spectrum`, `aurora`, `ember`, `mono`).
 
+## Voice-UI components
+
+Ready-made, themeable components for building a voice UI. Import the stylesheet
+once, then compose them inside a `<JargoClientProvider>`:
+
+```tsx
+import "@gojargo/jargo-client-react/styles.css";
+import {
+  ConnectButton,
+  MicButton,
+  ConnectionStatus,
+  Transcript,
+} from "@gojargo/jargo-client-react/react";
+
+<ConnectionStatus />
+<Transcript emptyLabel="Say hello to start…" />
+<ConnectButton />   {/* Start / End conversation, follows the connection state */}
+<MicButton />       {/* mute / unmute */}
+```
+
+- **`ConnectButton`** — connect when idle, disconnect when live; shows a spinner while connecting. Props: `labels`.
+- **`MicButton`** — mic mute/unmute toggle. Props: `labels`, `alwaysEnabled`.
+- **`ConnectionStatus`** — a state badge. Props: `labels`.
+- **`Transcript`** — auto-scrolling, `aria-live` message list. Built from events via `useJargoTranscript` (or pass `messages` to control it). Props: `emptyLabel`, `autoScroll`, `roleLabels`, `messages`.
+- **`Message`** — a single user/agent bubble.
+- **`useJargoTranscript()`** — `{ messages, clear }`; accumulates interim user transcripts + streamed `botLlmText` + `botTtsText` into a `TranscriptMessage[]`.
+
+**Theming.** Every component is styled through `--jargo-*` CSS variables
+(`--jargo-accent`, `--jargo-danger`, `--jargo-radius`, `--jargo-surface`,
+`--jargo-border`, `--jargo-text`, `--jargo-muted`, `--jargo-bubble`). Defaults
+adapt to the OS light/dark scheme; set any token on an ancestor to restyle. All
+components also accept `className`.
+
 ## API
 
 **Core** — `new JargoClient(options)`; `connect()`, `disconnect()`,
@@ -114,8 +147,10 @@ import { Orb, OrbPalettes } from "@gojargo/jargo-client-react/react";
 `serverMessage` (raw, incl. non-RTVI like jargo's `set_volume`), `remoteTrack`.
 
 **React** — `JargoClientProvider`, `JargoClientAudio`, `VoiceVisualizer`,
-`Orb`, `useJargoClient`, `useJargoConnection`, `useJargoTransportState`,
-`useJargoMicToggle`, `useJargoEvent`.
+`Orb`; components `ConnectButton`, `MicButton`, `ConnectionStatus`,
+`Transcript`, `Message`; hooks `useJargoClient`, `useJargoConnection`,
+`useJargoTransportState`, `useJargoMicToggle`, `useJargoEvent`,
+`useJargoTranscript`.
 
 ## Example
 
