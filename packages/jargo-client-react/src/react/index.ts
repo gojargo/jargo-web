@@ -16,10 +16,9 @@ export {
   useJargoMicToggle,
 } from "./hooks";
 
-// Re-export the base library (client class, types, and the Orb engine) so apps
-// can import everything from "@gojargo/jargo-client-react/react" if they prefer
-// a single entry.
-export { JargoClient, Orb as OrbEngine, OrbPalettes } from "@gojargo/jargo-client-js";
+// Re-export the base libraries (client + UI) so apps can import everything from
+// "@gojargo/jargo-client-react/react" if they prefer a single entry.
+export { JargoClient } from "@gojargo/jargo-client-js";
 export type {
   JargoClientOptions,
   JargoClientEvents,
@@ -27,7 +26,6 @@ export type {
   UserTranscript,
   TextPayload,
   JargoErrorPayload,
-  OrbOptions,
-  OrbBlend,
-  OrbPaletteName,
 } from "@gojargo/jargo-client-js";
+export { Orb as OrbEngine, OrbPalettes } from "@gojargo/jargo-ui";
+export type { OrbOptions, OrbBlend, OrbPaletteName } from "@gojargo/jargo-ui";

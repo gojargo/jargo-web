@@ -1,24 +1,32 @@
-# jargo-client-react
+# jargo-web
 
-React bindings for
-[jargo](https://github.com/gojargo/jargo) voice servers, plus a runnable
-Next.js example. npm workspaces monorepo.
+The web toolkit for [jargo](https://github.com/gojargo/jargo) voice servers: a
+headless client, a framework-agnostic UI (the **Orb**), and framework bindings —
+all in one npm-workspaces monorepo, layered like pipecat's client-js /
+client-react so the core can be reused anywhere.
 
-The React package builds on the framework-agnostic base library
-[`@gojargo/jargo-client-js`](https://github.com/gojargo/jargo-client-js) (the
-WebRTC/RTVI client and the **Orb** UI element), which lives in its own repo.
+## Packages
 
-- **[`packages/jargo-client-react`](./packages/jargo-client-react)** — the
-  `@gojargo/jargo-client-react` library (React provider, hooks, `<Orb />`).
+| Package | What it is |
+|---|---|
+| **[`@gojargo/jargo-client-js`](./packages/jargo-client-js)** | Headless WebRTC/RTVI client. No UI, no framework. |
+| **[`@gojargo/jargo-ui`](./packages/jargo-ui)** | Framework-agnostic UI — the **Orb** (audio-reactive moving lines). |
+| **[`@gojargo/jargo-client-react`](./packages/jargo-client-react)** | React provider, hooks, and `<Orb />`. |
+| **[`@gojargo/jargo-elements`](./packages/jargo-elements)** | Web components — `<jargo-orb>`. |
+
+Dependency flow: `jargo-ui` and `jargo-client-js` are the bases;
+`jargo-client-react` builds on both; `jargo-elements` builds on `jargo-ui`.
+(Vue and other bindings follow the same shape.)
+
 - **[`examples/nextjs-voicebot`](./examples/nextjs-voicebot)** — a Next.js
-  voicebot using the library.
+  voicebot using the React bindings and the Orb.
 
 ## Quick start
 
 ```bash
-npm install          # install + link the workspace
-npm run build        # build the library (packages/jargo-client-react -> dist/)
-npm run example      # run the Next.js example on http://localhost:3000
+npm install     # install + link the workspace
+npm run build   # build every package (in dependency order)
+npm run example # run the Next.js example on http://localhost:3000
 ```
 
 Configure the example by copying

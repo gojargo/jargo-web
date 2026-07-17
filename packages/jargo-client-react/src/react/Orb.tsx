@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useContext, useEffect, useRef } from "react";
-import { Orb as OrbEngine, type OrbOptions } from "@gojargo/jargo-client-js";
+import { Orb as OrbEngine, type OrbOptions } from "@gojargo/jargo-ui";
 import { JargoClientContext } from "./context";
 
 export interface OrbProps extends OrbOptions {
