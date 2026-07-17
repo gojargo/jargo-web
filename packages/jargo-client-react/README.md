@@ -1,17 +1,18 @@
 # @gojargo/jargo-client-react
 
-**React bindings** for
-[`@gojargo/jargo-client-js`](https://github.com/gojargo/jargo-client-js) — the
-browser client (classic WebRTC) for [jargo](https://github.com/gojargo/jargo)
-voice servers. It speaks jargo's WebRTC signaling (`POST /offer`, non-trickle
-SDP) and the RTVI protocol over a `"rtvi"` data channel — no Daily/Pipecat SDK
-dependency.
+**React bindings** for the jargo web toolkit — the headless
+[`@gojargo/jargo-client-js`](../jargo-client-js) client and the
+[`@gojargo/jargo-ui`](../jargo-ui) Orb — for
+[jargo](https://github.com/gojargo/jargo) voice servers. The client speaks
+jargo's WebRTC signaling (`POST /offer`, non-trickle SDP) and the RTVI protocol
+over a `"rtvi"` data channel — no Daily/Pipecat SDK dependency.
 
-The React package is a thin layer on top of the base JS library; installing it
-pulls in `@gojargo/jargo-client-js` automatically.
+The React package is a thin layer on top of those bases; installing it pulls
+them in automatically. Part of the
+[`jargo-web`](https://github.com/gojargo/jargo-web) monorepo.
 
-- **`@gojargo/jargo-client-react`** — re-exports the base library (`JargoClient`,
-  types, and the `Orb` engine).
+- **`@gojargo/jargo-client-react`** — re-exports the bases (`JargoClient`, types,
+  the `Orb` engine, and `OrbPalettes`).
 - **`@gojargo/jargo-client-react/react`** — provider, hooks, audio, visualizer,
   and the React `<Orb />`.
 
