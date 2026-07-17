@@ -5,6 +5,8 @@
 export { JargoClient } from "./JargoClient";
 export { JargoTransport } from "./transport";
 export { TypedEmitter } from "./events";
+export { TranscriptTracker } from "./transcript";
+export type { TranscriptMessage } from "./transcript";
 export {
   RTVI_LABEL,
   RTVI_PROTOCOL_VERSION,

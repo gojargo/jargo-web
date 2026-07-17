@@ -1,12 +1,16 @@
 "use client";
 
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import type {
-  JargoClient,
-  JargoClientEvents,
-  TransportState,
+import {
+  TranscriptTracker,
+  type JargoClient,
+  type JargoClientEvents,
+  type TranscriptMessage,
+  type TransportState,
 } from "@gojargo/jargo-client-js";
 import { JargoClientContext } from "./context";
+
+export type { TranscriptMessage };
 
 /** The {@link JargoClient} from the nearest provider. Throws if absent. */
 export function useJargoClient(): JargoClient {
@@ -88,75 +92,33 @@ export function useJargoMicToggle() {
   return { enabled, toggle, setEnabled: set };
 }
 
-/** A single line in a {@link useJargoTranscript} conversation. */
-export interface TranscriptMessage {
-  id: string;
-  role: "user" | "agent";
-  text: string;
-  /** False while a line is still being appended to (streaming / interim). */
-  final: boolean;
-}
-
 /**
- * Accumulates the conversation from client events into a message list: interim
- * user transcripts update in place then finalize; streamed `botLlmText` tokens
- * coalesce into the current agent line; fixed `botTtsText` becomes its own line;
- * and `botStoppedSpeaking` closes the current agent turn. Returns the messages
- * and a `clear()`.
+ * Accumulates the conversation from client events into a message list, via the
+ * framework-agnostic {@link TranscriptTracker}: interim user transcripts update
+ * in place then finalize; streamed `botLlmText` tokens coalesce into the current
+ * agent line; fixed `botTtsText` becomes its own line; and `botStoppedSpeaking`
+ * closes the current agent turn. Returns the messages and a `clear()`.
  */
 export function useJargoTranscript(): {
   messages: TranscriptMessage[];
   clear: () => void;
 } {
+  const client = useJargoClient();
   const [messages, setMessages] = useState<TranscriptMessage[]>([]);
-  const idRef = useRef(0);
-  const nextId = useCallback(() => `m${idRef.current++}`, []);
+  const trackerRef = useRef<TranscriptTracker | null>(null);
 
-  useJargoEvent("userTranscript", ({ text, final }) => {
-    const trimmed = text.trim();
-    setMessages((prev) => {
-      const last = prev[prev.length - 1];
-      // Update the trailing interim user line in place, if any.
-      if (last && last.role === "user" && !last.final) {
-        return [...prev.slice(0, -1), { ...last, text, final }];
-      }
-      if (!trimmed) return prev;
-      return [...prev, { id: nextId(), role: "user", text, final }];
-    });
-  });
+  useEffect(() => {
+    const tracker = new TranscriptTracker(client);
+    trackerRef.current = tracker;
+    setMessages(tracker.getMessages());
+    const off = tracker.onChange(setMessages);
+    return () => {
+      off();
+      tracker.destroy();
+      trackerRef.current = null;
+    };
+  }, [client]);
 
-  useJargoEvent("botLlmText", ({ text }) => {
-    if (!text) return;
-    setMessages((prev) => {
-      const last = prev[prev.length - 1];
-      if (last && last.role === "agent" && !last.final) {
-        return [...prev.slice(0, -1), { ...last, text: last.text + text }];
-      }
-      return [...prev, { id: nextId(), role: "agent", text, final: false }];
-    });
-  });
-
-  // Fixed bot speech (e.g. a wake-word ack) — its own final line.
-  useJargoEvent("botTtsText", ({ text }) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    setMessages((prev) => [
-      ...prev,
-      { id: nextId(), role: "agent", text: trimmed, final: true },
-    ]);
-  });
-
-  // End of a bot turn: close the current streaming agent line.
-  useJargoEvent("botStoppedSpeaking", () => {
-    setMessages((prev) => {
-      const last = prev[prev.length - 1];
-      if (last && last.role === "agent" && !last.final) {
-        return [...prev.slice(0, -1), { ...last, final: true }];
-      }
-      return prev;
-    });
-  });
-
-  const clear = useCallback(() => setMessages([]), []);
+  const clear = useCallback(() => trackerRef.current?.clear(), []);
   return { messages, clear };
 }

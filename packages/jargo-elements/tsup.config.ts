@@ -7,5 +7,5 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   target: "es2020",
-  external: ["@gojargo/jargo-ui"],
+  external: ["@gojargo/jargo-ui", "@gojargo/jargo-client-js"],
 });

@@ -1,11 +1,14 @@
-// @gojargo/jargo-elements — native web components for jargo, built on
-// @gojargo/jargo-ui. Today: <jargo-orb>, a custom element wrapping the Orb.
+// @gojargo/jargo-elements — native web components for jargo. The visual
+// <jargo-orb> is built on @gojargo/jargo-ui; the client-driven components
+// (<jargo-connect-button>, <jargo-mic-button>, <jargo-status>,
+// <jargo-transcript>) read a client set via setJargoClient(). Style them all
+// by importing "@gojargo/jargo-ui/theme.css" once.
 //
-//   import { defineJargoOrb } from "@gojargo/jargo-elements";
-//   defineJargoOrb();
-//   // <jargo-orb colors="aurora" rings="6" glow="20"></jargo-orb>
-//
-// or auto-register everything: import "@gojargo/jargo-elements/define".
+//   import "@gojargo/jargo-elements/define";
+//   import "@gojargo/jargo-ui/theme.css";
+//   setJargoClient(new JargoClient({ baseUrl }));
+//   // <jargo-orb colors="aurora"></jargo-orb>
+//   // <jargo-connect-button></jargo-connect-button>
 
 import {
   Orb,
@@ -13,6 +16,21 @@ import {
   type OrbOptions,
   type OrbPaletteName,
 } from "@gojargo/jargo-ui";
+import {
+  JargoConnectButtonElement,
+  JargoMicButtonElement,
+  JargoStatusElement,
+  JargoTranscriptElement,
+} from "./components";
+
+export { setJargoClient, getJargoClient } from "./client-registry";
+export { JargoClientElement } from "./JargoClientElement";
+export {
+  JargoConnectButtonElement,
+  JargoMicButtonElement,
+  JargoStatusElement,
+  JargoTranscriptElement,
+} from "./components";
 
 // OrbOptions keys that take a number, mapped from their kebab-case attributes.
 type NumKey =
@@ -140,11 +158,27 @@ export class JargoOrbElement extends HTMLElement {
   }
 }
 
+function define(tag: string, ctor: CustomElementConstructor): void {
+  if (typeof customElements !== "undefined" && !customElements.get(tag)) {
+    customElements.define(tag, ctor);
+  }
+}
+
 /** Register {@link JargoOrbElement} as `<jargo-orb>` (or a custom tag). */
 export function defineJargoOrb(tag = "jargo-orb"): void {
-  if (typeof customElements !== "undefined" && !customElements.get(tag)) {
-    customElements.define(tag, JargoOrbElement);
-  }
+  define(tag, JargoOrbElement);
+}
+
+/**
+ * Register all jargo web components: `<jargo-orb>`, `<jargo-connect-button>`,
+ * `<jargo-mic-button>`, `<jargo-status>`, `<jargo-transcript>`.
+ */
+export function defineJargoElements(): void {
+  defineJargoOrb();
+  define("jargo-connect-button", JargoConnectButtonElement);
+  define("jargo-mic-button", JargoMicButtonElement);
+  define("jargo-status", JargoStatusElement);
+  define("jargo-transcript", JargoTranscriptElement);
 }
 
 export { OrbPalettes };

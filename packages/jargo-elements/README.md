@@ -1,8 +1,13 @@
 # @gojargo/jargo-elements
 
-**Web components** for jargo, built on
-[`@gojargo/jargo-ui`](../jargo-ui). Today it ships `<jargo-orb>` — the Orb as a
-native custom element, usable from plain HTML or any framework.
+**Web components** for jargo — the framework-agnostic path for Angular, Svelte,
+Solid, or plain HTML. Built on [`@gojargo/jargo-ui`](../jargo-ui) (visual +
+theme) and [`@gojargo/jargo-client-js`](../jargo-client-js) (the client).
+
+- **`<jargo-orb>`** — the Orb (no client needed).
+- **`<jargo-connect-button>`**, **`<jargo-mic-button>`**, **`<jargo-status>`**,
+  **`<jargo-transcript>`** — client-driven; they read a client set via
+  `setJargoClient()`.
 
 Part of the [`jargo-web`](https://github.com/gojargo/jargo-web) monorepo.
 
@@ -14,21 +19,37 @@ npm install @gojargo/jargo-elements
 
 ## Usage
 
-Auto-register the elements, then use them in markup:
+Register the elements, import the theme, set a client, then use them in markup:
 
 ```html
 <script type="module">
+  import { setJargoClient } from "@gojargo/jargo-elements";
   import "@gojargo/jargo-elements/define";
+  import "@gojargo/jargo-ui/theme.css";
+  import { JargoClient } from "@gojargo/jargo-client-js";
+
+  setJargoClient(new JargoClient({ baseUrl: "https://jargo.example.com" }));
 </script>
 
-<jargo-orb colors="aurora" rings="6" glow="20"></jargo-orb>
+<jargo-status></jargo-status>
+<jargo-orb colors="aurora"></jargo-orb>
+<jargo-transcript empty-label="Say hello to start…"></jargo-transcript>
+<jargo-connect-button></jargo-connect-button>
+<jargo-mic-button></jargo-mic-button>
 ```
 
-Or register manually (e.g. under a custom tag):
+`setJargoClient(client)` makes one client the default for every element on the
+page; an element can override it by setting its `.client` property. Register
+manually instead of `/define` with `defineJargoElements()` (or just
+`defineJargoOrb()`).
+
+The client-driven elements render in light DOM and are styled by
+`@gojargo/jargo-ui/theme.css` — theme them with the same `--jargo-*` variables.
+
+The `<jargo-orb>` also registers under a custom tag:
 
 ```js
 import { defineJargoOrb } from "@gojargo/jargo-elements";
-defineJargoOrb();            // <jargo-orb>
 defineJargoOrb("voice-orb"); // <voice-orb>
 ```
 

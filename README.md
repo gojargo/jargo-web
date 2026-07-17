@@ -9,19 +9,23 @@ client-react so the core can be reused anywhere.
 
 | Package | What it is |
 |---|---|
-| **[`@gojargo/jargo-client-js`](./packages/jargo-client-js)** | Headless WebRTC/RTVI client. No UI, no framework. |
-| **[`@gojargo/jargo-ui`](./packages/jargo-ui)** | Framework-agnostic UI — the **Orb** (audio-reactive moving lines). |
-| **[`@gojargo/jargo-client-react`](./packages/jargo-client-react)** | React provider, hooks, and `<Orb />`. |
+| **[`@gojargo/jargo-client-js`](./packages/jargo-client-js)** | Headless WebRTC/RTVI client + shared logic (e.g. `TranscriptTracker`). No UI, no framework. |
+| **[`@gojargo/jargo-ui`](./packages/jargo-ui)** | Framework-agnostic UI: the **Orb**, plus the design system (`--jargo-*` tokens + `theme.css`). |
+| **[`@gojargo/jargo-client-react`](./packages/jargo-client-react)** | React provider, hooks, `<Orb />`, and voice-UI components (`ConnectButton`, `Transcript`, …). |
 | **[`@gojargo/jargo-client-vue`](./packages/jargo-client-vue)** | Vue 3 composables and an `<Orb>` component. |
-| **[`@gojargo/jargo-elements`](./packages/jargo-elements)** | Web components — `<jargo-orb>`. |
+| **[`@gojargo/jargo-elements`](./packages/jargo-elements)** | Web components — `<jargo-orb>`, `<jargo-connect-button>`, `<jargo-transcript>`, … |
 
-Dependency flow: `jargo-ui` and `jargo-client-js` are the bases;
-`jargo-client-react` and `jargo-client-vue` build on both; `jargo-elements`
-builds on `jargo-ui`.
+Dependency flow: `jargo-client-js` (client + shared logic) and `jargo-ui`
+(visuals + design system) are the two bases; `jargo-client-react`,
+`jargo-client-vue`, and `jargo-elements` all build on them. Each framework
+provides *native* components, but they share one core: the logic lives in
+`jargo-client-js`, and the look (`--jargo-*` tokens + `theme.css`) lives in
+`jargo-ui`.
 
-**Other frameworks (Angular, Svelte, Solid, plain HTML):** use the
-`<jargo-orb>` web component from `@gojargo/jargo-elements`, and the plain
-`JargoClient` / `Orb` classes directly — no framework-specific package needed.
+**Other frameworks (Angular, Svelte, Solid, plain HTML):** use the web
+components from `@gojargo/jargo-elements` (`<jargo-orb>`,
+`<jargo-connect-button>`, `<jargo-transcript>`, …) and the plain `JargoClient` /
+`Orb` classes directly — no framework-specific package needed.
 
 - **[`examples/nextjs-voicebot`](./examples/nextjs-voicebot)** — a Next.js
   voicebot using the React bindings and the Orb.

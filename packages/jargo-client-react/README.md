@@ -104,11 +104,13 @@ import { Orb, OrbPalettes } from "@gojargo/jargo-client-react/react";
 
 ## Voice-UI components
 
-Ready-made, themeable components for building a voice UI. Import the stylesheet
-once, then compose them inside a `<JargoClientProvider>`:
+Ready-made, themeable components for building a voice UI. Import the shared
+stylesheet once (it lives in the design-system package `@gojargo/jargo-ui`, so
+React, Vue, and the web components all share one look), then compose the
+components inside a `<JargoClientProvider>`:
 
 ```tsx
-import "@gojargo/jargo-client-react/styles.css";
+import "@gojargo/jargo-ui/theme.css";
 import {
   ConnectButton,
   MicButton,
@@ -131,9 +133,10 @@ import {
 
 **Theming.** Every component is styled through `--jargo-*` CSS variables
 (`--jargo-accent`, `--jargo-danger`, `--jargo-radius`, `--jargo-surface`,
-`--jargo-border`, `--jargo-text`, `--jargo-muted`, `--jargo-bubble`). Defaults
-adapt to the OS light/dark scheme; set any token on an ancestor to restyle. All
-components also accept `className`.
+`--jargo-border`, `--jargo-text`, `--jargo-muted`, `--jargo-bubble`), defined in
+[`@gojargo/jargo-ui/theme.css`](../jargo-ui). Defaults adapt to the OS light/dark
+scheme; set any token on an ancestor to restyle. All components also accept
+`className`.
 
 ## API
 

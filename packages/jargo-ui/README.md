@@ -42,6 +42,23 @@ element (a canvas is created to fill it). Key options: `rings`, `radius`,
 Built-in palettes are exported as `OrbPalettes` — `spectrum` (the default),
 `aurora`, `ember`, and `mono`.
 
+## Theme (design system)
+
+This package is also the home of the jargo **design system**: the `--jargo-*`
+tokens and the `.jargo-*` component styles shared by every framework binding.
+Import it once in your app so the components (React `<ConnectButton>`, the
+`<jargo-transcript>` web component, …) all render with one consistent,
+themeable look:
+
+```ts
+import "@gojargo/jargo-ui/theme.css";
+```
+
+Restyle by overriding any token on an ancestor — `--jargo-accent`,
+`--jargo-radius`, `--jargo-surface`, `--jargo-border`, `--jargo-text`,
+`--jargo-muted`, `--jargo-bubble`, `--jargo-danger`. Defaults adapt to the OS
+light/dark scheme.
+
 ## Framework wrappers
 
 - **React** — [`@gojargo/jargo-client-react`](../jargo-client-react) exposes `<Orb />`.

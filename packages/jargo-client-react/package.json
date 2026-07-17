@@ -11,7 +11,7 @@
   "keywords": ["jargo", "webrtc", "rtvi", "voice-ai", "react"],
   "type": "module",
   "sideEffects": false,
-  "files": ["dist", "styles.css"],
+  "files": ["dist"],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,8 +25,7 @@
       "types": "./dist/react.d.ts",
       "import": "./dist/react.js",
       "require": "./dist/react.cjs"
-    },
-    "./styles.css": "./styles.css"
+    }
   },
   "scripts": {
     "build": "tsup",

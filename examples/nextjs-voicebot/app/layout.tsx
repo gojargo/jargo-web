@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "@gojargo/jargo-client-react/styles.css";
+import "@gojargo/jargo-ui/theme.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

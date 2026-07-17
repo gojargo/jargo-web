@@ -1,6 +1,8 @@
 /*
- * @gojargo/jargo-client-react component styles.
- *   import "@gojargo/jargo-client-react/styles.css";
+ * @gojargo/jargo-ui — the jargo design system: --jargo-* tokens and the
+ * .jargo-* component styles shared by every framework binding (React, Vue,
+ * web components). Import once in your app:
+ *   import "@gojargo/jargo-ui/theme.css";
  *
  * Everything is themed through --jargo-* custom properties. The defaults below
  * are set at zero specificity (:where) and adapt to the OS color scheme —
