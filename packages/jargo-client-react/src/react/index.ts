@@ -19,7 +19,7 @@ export {
 // Re-export the base library (client class, types, and the Orb engine) so apps
 // can import everything from "@gojargo/jargo-client-react/react" if they prefer
 // a single entry.
-export { JargoClient, Orb as OrbEngine } from "@gojargo/jargo-client-js";
+export { JargoClient, Orb as OrbEngine, OrbPalettes } from "@gojargo/jargo-client-js";
 export type {
   JargoClientOptions,
   JargoClientEvents,
@@ -29,4 +29,5 @@ export type {
   JargoErrorPayload,
   OrbOptions,
   OrbBlend,
+  OrbPaletteName,
 } from "@gojargo/jargo-client-js";
