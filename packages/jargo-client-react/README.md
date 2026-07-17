@@ -87,10 +87,10 @@ engine). Inside a `<JargoClientProvider>` it reacts to the bot's voice
 automatically; standalone, drive it with a `level` (0..1) or let it idle.
 
 ```tsx
-import { Orb } from "@gojargo/jargo-client-react/react";
+import { Orb, OrbPalettes } from "@gojargo/jargo-client-react/react";
 
 // Reacts to the bot when inside a <JargoClientProvider>:
-<Orb size={220} colors={["#22d3ee", "#6366f1", "#a855f7"]} />
+<Orb size={220} colors={OrbPalettes.aurora} />
 
 // Standalone, manually driven:
 <Orb size={160} level={0.7} reactToBot={false} />
@@ -98,7 +98,8 @@ import { Orb } from "@gojargo/jargo-client-react/react";
 
 `<Orb />` forwards all engine options (`rings`, `radius`, `colors`, `speed`,
 `reactivity`, `glow`, `core`, `blend`, …) plus `size`/`width`/`height`,
-`level`, `reactToBot`, and `paused`.
+`level`, `reactToBot`, and `paused`. Built-in palettes are exported as
+`OrbPalettes` (`spectrum`, `aurora`, `ember`, `mono`).
 
 ## API
 
