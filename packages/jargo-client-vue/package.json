@@ -1,0 +1,43 @@
+{
+  "name": "@gojargo/jargo-client-vue",
+  "version": "0.1.0",
+  "description": "Vue 3 bindings for jargo voice servers — composables and an <Orb> component.",
+  "license": "BSD-2-Clause",
+  "author": "the jargo authors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gojargo/jargo-web.git",
+    "directory": "packages/jargo-client-vue"
+  },
+  "keywords": ["jargo", "vue", "webrtc", "rtvi", "voice-ai", "orb"],
+  "type": "module",
+  "sideEffects": false,
+  "files": ["dist"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gojargo/jargo-client-js": "^0.1.0",
+    "@gojargo/jargo-ui": "^0.1.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.3"
+  },
+  "devDependencies": {
+    "tsup": "^8",
+    "typescript": "^5",
+    "vue": "^3.4"
+  }
+}

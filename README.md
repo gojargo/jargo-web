@@ -12,11 +12,16 @@ client-react so the core can be reused anywhere.
 | **[`@gojargo/jargo-client-js`](./packages/jargo-client-js)** | Headless WebRTC/RTVI client. No UI, no framework. |
 | **[`@gojargo/jargo-ui`](./packages/jargo-ui)** | Framework-agnostic UI — the **Orb** (audio-reactive moving lines). |
 | **[`@gojargo/jargo-client-react`](./packages/jargo-client-react)** | React provider, hooks, and `<Orb />`. |
+| **[`@gojargo/jargo-client-vue`](./packages/jargo-client-vue)** | Vue 3 composables and an `<Orb>` component. |
 | **[`@gojargo/jargo-elements`](./packages/jargo-elements)** | Web components — `<jargo-orb>`. |
 
 Dependency flow: `jargo-ui` and `jargo-client-js` are the bases;
-`jargo-client-react` builds on both; `jargo-elements` builds on `jargo-ui`.
-(Vue and other bindings follow the same shape.)
+`jargo-client-react` and `jargo-client-vue` build on both; `jargo-elements`
+builds on `jargo-ui`.
+
+**Other frameworks (Angular, Svelte, Solid, plain HTML):** use the
+`<jargo-orb>` web component from `@gojargo/jargo-elements`, and the plain
+`JargoClient` / `Orb` classes directly — no framework-specific package needed.
 
 - **[`examples/nextjs-voicebot`](./examples/nextjs-voicebot)** — a Next.js
   voicebot using the React bindings and the Orb.
