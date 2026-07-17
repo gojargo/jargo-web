@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import type { JargoClient } from "../core/JargoClient";
-import type { JargoClientEvents, TransportState } from "../core/types";
+import type {
+  JargoClient,
+  JargoClientEvents,
+  TransportState,
+} from "@gojargo/jargo-client-js";
 import { JargoClientContext } from "./context";
 
 /** The {@link JargoClient} from the nearest provider. Throws if absent. */

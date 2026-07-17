@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  Orb,
   useJargoConnection,
   useJargoEvent,
   useJargoMicToggle,
@@ -70,6 +71,7 @@ export function VoiceBot() {
       </header>
 
       <div className="visual">
+        <Orb size={200} />
         <VoiceVisualizer width={320} height={72} bars={28} barColor="#8b8bf6" />
         <div className="speaking">
           <span className={userSpeaking ? "dot on" : "dot"}>● vous</span>
