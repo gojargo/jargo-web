@@ -1,0 +1,40 @@
+name: Publish to npm
+
+# Publishes the @gojargo/* packages to npm. Manual, or on a v* tag. Needs the
+# NPM_TOKEN repo secret (an npm automation token). Idempotent: already-published
+# versions are skipped, so re-runs are safe (bump versions to publish anew).
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Publish @gojargo/* (dependency order, skip existing)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -e
+          for dir in jargo-client-js jargo-ui jargo-elements jargo-client-react jargo-client-vue; do
+            name=$(node -p "require('./packages/$dir/package.json').name")
+            ver=$(node -p "require('./packages/$dir/package.json').version")
+            if npm view "$name@$ver" version >/dev/null 2>&1; then
+              echo "skip $name@$ver (already published)"
+            else
+              echo "publish $name@$ver"
+              npm publish -w "$name" --access public
+            fi
+          done
