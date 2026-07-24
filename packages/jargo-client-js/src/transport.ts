@@ -85,10 +85,14 @@ export class JargoTransport {
             this.setState("connected");
             break;
           case "failed":
+            // Server-initiated close/failure: release the mic (turns off the
+            // browser recording indicator), not just flip the state.
+            this.cleanup();
             this.setState("error");
             break;
           case "disconnected":
           case "closed":
+            this.cleanup();
             this.setState("disconnected");
             break;
         }
@@ -157,18 +161,26 @@ export class JargoTransport {
   }
 
   async disconnect(): Promise<void> {
+    this.cleanup();
+    if (this.state !== "disconnected") this.setState("disconnected");
+  }
+
+  // cleanup releases every connection resource — the mic tracks (so the browser
+  // recording indicator turns off), the data channel and the peer connection. It
+  // detaches onconnectionstatechange first, so closing the peer connection here
+  // does not re-enter cleanup from the state-change handler.
+  private cleanup(): void {
+    if (this.pc) {
+      this.pc.onconnectionstatechange = null;
+      this.pc.ontrack = null;
+    }
     this.dc?.close();
     this.dc = null;
     this.localStream?.getTracks().forEach((t) => t.stop());
     this.localStream = null;
-    if (this.pc) {
-      this.pc.onconnectionstatechange = null;
-      this.pc.ontrack = null;
-      this.pc.close();
-      this.pc = null;
-    }
+    this.pc?.close();
+    this.pc = null;
     this.handlers.onRemoteTrack(null);
-    if (this.state !== "disconnected") this.setState("disconnected");
   }
 
   private async captureMic(): Promise<MediaStream | null> {
