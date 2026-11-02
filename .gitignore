@@ -7,3 +7,6 @@ out/
 .env.local
 .DS_Store
 npm-debug.log*
+
+# The prebuilt browser client is a vendored build artifact, embedded by Go.
+!/prebuilt/dist/

@@ -27,6 +27,9 @@ components from `@gojargo/jargo-elements` (`<jargo-orb>`,
 `<jargo-connect-button>`, `<jargo-transcript>`, …) and the plain `JargoClient` /
 `Orb` classes directly — no framework-specific package needed.
 
+- **[`prebuilt`](./prebuilt)**: a Go module embedding a ready-made browser
+  client (pipecat-ai-prebuilt, unmodified) for the jargo development runner to
+  serve at `/client`.
 - **[`examples/nextjs-voicebot`](./examples/nextjs-voicebot)** — a Next.js
   voicebot using the React bindings and the Orb.
 
